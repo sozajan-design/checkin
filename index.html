@@ -60,7 +60,7 @@
         const ADMIN_PASSWORD = '0000'; 
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwTBjHVnzYJW53_inuVIaMJ0JZYpChnKsHJQkAmTB9uvV8BQPBuVTcSxN67TycpDkt8/exec";
         
-        const APP_VERSION = 'v3.0.0';
+        const APP_VERSION = 'v3.0.1';
         const COMPANY_NAME_ZH = '日安匕禾'; 
         const COMPANY_NAME_EN = 'BEAVER TECH SERVIE';
 
@@ -390,7 +390,7 @@
                                     <div className="flex items-center justify-between mb-3">
                                         <h2 className="text-xl font-bold text-gray-800">賓客名冊</h2>
                                         <button onClick={syncWithGoogleSheet} disabled={isLoading} className="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 active:scale-95">
-                                            <Icon name="RefreshCw" className={isLoading ? "animate-spin" : ""} size={14}/> 同步
+                                            <Icon name="RefreshCw" size={14}/> 同步
                                         </button>
                                     </div>
                                     <div className="relative">
@@ -521,18 +521,44 @@
         }
 
         function ScannerComponent({ cameraId, onScan }) {
+            // 使用 ref 儲存最新的 onScan，避免依賴更新導致相機重啟
+            const onScanRef = useRef(onScan);
+            
+            useEffect(() => {
+                onScanRef.current = onScan;
+            }, [onScan]);
+
             useEffect(() => {
                 const html5QrCode = new Html5Qrcode("reader");
-                const config = { fps: 20, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
+                const config = { 
+                    fps: 30, // 提升掃描頻率至 30fps
+                    qrbox: { width: 250, height: 250 }, 
+                    aspectRatio: 1.0, 
+                    rememberLastUsedCamera: true
+                };
+                
                 html5QrCode.start(cameraId, config, 
                     (decodedText) => {
-                        html5QrCode.stop().then(() => { html5QrCode.clear(); onScan(decodedText); }).catch(err => console.error(err));
+                        // 掃描成功後，立即調用 callback (極速反應)
+                        if (onScanRef.current) {
+                            onScanRef.current(decodedText);
+                        }
+                        
+                        // 嘗試在背景停止相機，但不阻擋流程
+                        html5QrCode.stop().then(() => html5QrCode.clear()).catch(err => {});
                     },
                     (errorMessage) => { }
-                ).catch(err => { alert("相機啟動失敗，請重新嘗試或檢查權限。"); });
+                ).catch(err => { 
+                    // alert("相機啟動失敗"); // 移除 alert 避免干擾
+                });
 
-                return () => { if (html5QrCode.isScanning) html5QrCode.stop().then(() => html5QrCode.clear()).catch(err => {}); };
-            }, [onScan]);
+                return () => { 
+                    if (html5QrCode.isScanning) {
+                        html5QrCode.stop().then(() => html5QrCode.clear()).catch(err => {}); 
+                    }
+                };
+            }, [cameraId]); // 只在 cameraId 改變時重新啟動
+
             return <div id="reader"></div>;
         }
 
