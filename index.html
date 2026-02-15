@@ -7,356 +7,354 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2685.2">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="zh-TW"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;活動報到系統 - 日安匕禾&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="theme-color" content="#4F46E5"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 移動端優化：全螢幕 App 體驗 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"&gt;</p>
-<p class="p2"><span class="Apple-converted-space">    </span></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 1. 載入 Tailwind CSS &amp; React &amp; 掃描模組 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/@babel/standalone/babel.min.js"&gt;&lt;/script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/html5-qrcode" type="text/javascript"&gt;&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@media print {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>@page { margin: 1cm; }</p>
-<p class="p1"><span class="Apple-converted-space">          </span>body * { visibility: hidden; }</p>
-<p class="p1"><span class="Apple-converted-space">          </span>.print-area, .print-area * { visibility: visible; }</p>
-<p class="p1"><span class="Apple-converted-space">          </span>.print-area { position: absolute; left: 0; top: 0; width: 100%; }</p>
-<p class="p1"><span class="Apple-converted-space">          </span>.no-print { display: none !important; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>/* 按鈕呼吸動畫 */</p>
-<p class="p1"><span class="Apple-converted-space">        </span>@keyframes pulse-indigo {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(79, 70, 229, 0); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.btn-ready { animation: pulse-indigo 2s infinite; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.brand-footer { padding: 2rem 0; text-align: center; width: 100%; margin-top: auto; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>#reader { border: none !important; overflow: hidden; border-radius: 1.5rem; background: #000; }</p>
-<p class="p1"><span class="Apple-converted-space">        </span>#reader video { object-fit: cover !important; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body class="bg-gray-50 h-screen overflow-hidden text-gray-900"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="root" class="h-full"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const { useState, useEffect, useRef } = React;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const ADMIN_PASSWORD = '0000'; // 管理密碼</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwTBjHVnzYJW53_inuVIaMJ0JZYpChnKsHJQkAmTB9uvV8BQPBuVTcSxN67TycpDkt8/exec";</p>
-<p class="p2"><span class="Apple-converted-space">        </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const APP_VERSION = 'v1.4.1';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const COMPANY_NAME_ZH = '日安匕禾';<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const COMPANY_NAME_EN = 'BEAVER TECH SERVIE';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>// --- 圖示組件 ---</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const Icon = ({ name, size = 20, className = "" }) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const icons = {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>Camera: &lt;&gt;&lt;path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/&gt;&lt;circle cx="12" cy="13" r="3"/&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>QrCode: &lt;&gt;&lt;rect x="3" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="3" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>User: &lt;&gt;&lt;path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"&gt;&lt;/path&gt;&lt;circle cx="12" cy="7" r="4"&gt;&lt;/circle&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>CheckCircle: &lt;&gt;&lt;path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"&gt;&lt;/path&gt;&lt;polyline points="22 4 12 14.01 9 11.01"&gt;&lt;/polyline&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>XCircle: &lt;&gt;&lt;circle cx="12" cy="12" r="10"&gt;&lt;/circle&gt;&lt;line x1="15" y1="9" x2="9" y2="15"&gt;&lt;/line&gt;&lt;line x1="9" y1="9" x2="15" y2="15"&gt;&lt;/line&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>AlertTriangle: &lt;&gt;&lt;path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"&gt;&lt;/path&gt;&lt;line x1="12" y1="9" x2="12" y2="13"&gt;&lt;/line&gt;&lt;line x1="12" y1="17" x2="12.01" y2="17"&gt;&lt;/line&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>RefreshCw: &lt;&gt;&lt;polyline points="23 4 23 10 17 10"&gt;&lt;/polyline&gt;&lt;polyline points="1 20 1 14 7 14"&gt;&lt;/polyline&gt;&lt;path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"&gt;&lt;/path&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>Database: &lt;&gt;&lt;ellipse cx="12" cy="5" rx="9" ry="3"&gt;&lt;/ellipse&gt;&lt;path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"&gt;&lt;/path&gt;&lt;path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"&gt;&lt;/path&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>X: &lt;&gt;&lt;line x1="18" y1="6" x2="6" y2="18"&gt;&lt;/line&gt;&lt;line x1="6" y1="6" x2="18" y2="18"&gt;&lt;/line&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>Hash: &lt;&gt;&lt;line x1="4" y1="9" x2="20" y2="9"&gt;&lt;/line&gt;&lt;line x1="4" y1="15" x2="20" y2="15"&gt;&lt;/line&gt;&lt;line x1="10" y1="3" x2="8" y2="21"&gt;&lt;/line&gt;&lt;line x1="16" y1="3" x2="14" y2="21"&gt;&lt;/line&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>Lock: &lt;&gt;&lt;rect x="3" y="11" width="18" height="11" rx="2" ry="2"&gt;&lt;/rect&gt;&lt;path d="M7 11V7a5 5 0 0 1 10 0v4"&gt;&lt;/path&gt;&lt;/&gt;,</p>
-<p class="p1"><span class="Apple-converted-space">                </span>Cloud: &lt;path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"&gt;&lt;/path&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;svg<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>xmlns="http://www.w3.org/2000/svg"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>width={size}<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>height={size}<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>viewBox="0 0 24 24"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>fill="none"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>stroke="currentColor"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>strokeWidth="2"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>strokeLinecap="round"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>strokeLinejoin="round"<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>className={className}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>{icons[name] || &lt;circle cx="12" cy="12" r="10" /&gt;}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/svg&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const CompanyBrand = () =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div className="brand-footer no-print"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="w-12 h-0.5 bg-gray-200 mx-auto mb-4 opacity-50"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="font-bold text-gray-500 tracking-widest"&gt;{COMPANY_NAME_ZH}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="text-[10px] uppercase tracking-tighter text-gray-400 mt-1"&gt;{COMPANY_NAME_EN}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;p className="mt-2 opacity-30 font-mono text-[9px]"&gt;BUILD {APP_VERSION}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function App() {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [activeTab, setActiveTab] = useState('scan');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [guests, setGuests] = useState([]);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [scanResult, setScanResult] = useState(null);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [showManualInput, setShowManualInput] = useState(false);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [isScanning, setIsScanning] = useState(false);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [isAdmin, setIsAdmin] = useState(false);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [showLoginModal, setShowLoginModal] = useState(false);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [passwordInput, setPasswordInput] = useState('');</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [apiUrl, setApiUrl] = useState(DEFAULT_API_URL);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>const [isLoading, setIsLoading] = useState(false);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>// 初次載入範例資料</p>
-<p class="p1"><span class="Apple-converted-space">                </span>setGuests([{ id: 'DEMO01', name: '測試賓客', table: '01', seat: '1', status: 'pending' }]);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}, []);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const handleScanSuccess = (code) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>setIsScanning(false);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const cleanCode = code.trim();</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (!cleanCode) return;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if(navigator.vibrate) navigator.vibrate(200);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                </span>const guestIndex = guests.findIndex(g =&gt; g.id.toLowerCase() === cleanCode.toLowerCase());</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (guestIndex === -1) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setScanResult({ type: 'error', message: '無效票券', detail: `ID: ${cleanCode}`, color: 'red' });</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const guest = guests[guestIndex];</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (guest.status === 'checked') {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>setScanResult({ type: 'duplicate', message: '重複掃描', detail: `已於 ${guest.checkInTime || '稍早'} 入場`, data: guest, color: 'yellow' });</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const newGuests = [...guests];</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const timeStr = new Date().toLocaleTimeString('zh-TW', {hour: '2-digit', minute:'2-digit'});</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>newGuests[guestIndex] = { ...guest, status: 'checked', checkInTime: timeStr };</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>setGuests(newGuests);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>setScanResult({ type: 'success', message: '報到成功', data: newGuests[guestIndex], color: 'green' });</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>// 同步至 Google Sheet</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>fetch(`${apiUrl}?action=check_in`, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ id: cleanCode }) }).catch(()=&gt;{});</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const startCamera = async () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>stream.getTracks().forEach(t =&gt; t.stop());</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>setIsScanning(true);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} catch (err) {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>alert("無法啟動相機。請確認瀏覽器設定已允許相機權限。");</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>const syncWithGoogleSheet = async () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>if (!apiUrl) return;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>setIsLoading(true);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const response = await fetch(`${apiUrl}?action=read&amp;t=${new Date().getTime()}`);</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>const json = await response.json();</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>if (json.status === 'success') {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>setGuests(json.data);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>alert("名單同步完成！");</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>} catch (error) { alert("同步失敗。"); }<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                </span>finally { setIsLoading(false); }</p>
-<p class="p1"><span class="Apple-converted-space">            </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>return (</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div className="flex flex-col h-full overflow-hidden select-none"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;header className={`p-4 pb-6 shadow-md z-10 transition-colors no-print ${isAdmin ? 'bg-gray-900' : 'bg-indigo-600'}`}&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-between items-center text-white"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h1 className="text-xl font-bold flex items-center gap-2"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;Icon name="CheckCircle" className="w-6 h-6" /&gt; 接待報到系統</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="text-xs bg-black/20 px-3 py-1 rounded-full font-mono"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>{guests.filter(g =&gt; g.status === 'checked').length} / {guests.length}</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;main className="flex-1 overflow-y-auto relative bg-gray-50 flex flex-col pt-6 px-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{activeTab === 'scan' &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 flex flex-col items-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>{!scanResult ? (</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div className="w-full max-w-sm flex flex-col items-center flex-1 h-full"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="flex-1 flex flex-col items-center justify-center w-full min-h-[350px]"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>{isScanning ? (</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;div className="w-full aspect-square bg-black rounded-3xl overflow-hidden shadow-2xl relative border-4 border-white mx-auto"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;ScannerComponent onScan={handleScanSuccess} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;button onClick={() =&gt; setIsScanning(false)} className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full backdrop-blur-sm z-20"&gt;&lt;Icon name="X" size={20} /&gt;&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>) : (</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;button onClick={startCamera} className="w-full aspect-square bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-3xl shadow-xl flex flex-col items-center justify-center text-white active:scale-95 transition-transform btn-ready"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;Icon name="QrCode" className="w-24 h-24 mb-4 opacity-90" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;span className="text-3xl font-black tracking-wider text-center px-4 leading-tight"&gt;啟動掃描&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;span className="text-indigo-200 text-sm mt-3"&gt;(點擊後請選允許相機)&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;button onClick={() =&gt; setShowManualInput(true)} className="w-full py-4 bg-white border-2 border-indigo-100 text-indigo-600 rounded-2xl font-bold text-lg shadow-sm flex items-center justify-center gap-2 active:bg-indigo-50 mt-8 mb-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;Icon name="Hash" size={20} /&gt; 手動輸入編號</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;CompanyBrand /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>) : (</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div className={`absolute inset-0 z-20 flex flex-col ${scanResult.type === 'success' ? 'bg-green-500' : scanResult.type === 'duplicate' ? 'bg-yellow-500' : 'bg-red-500'}`}&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="flex-1 flex flex-col items-center justify-center p-6 text-white text-center animate-in fade-in zoom-in duration-300"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div className="mb-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>{scanResult.type === 'success' &amp;&amp; &lt;Icon name="CheckCircle" className="w-24 h-24" /&gt;}</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>{scanResult.type === 'duplicate' &amp;&amp; &lt;Icon name="AlertTriangle" className="w-24 h-24" /&gt;}</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>{scanResult.type === 'error' &amp;&amp; &lt;Icon name="XCircle" className="w-24 h-24" /&gt;}</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;h2 className="text-4xl font-black mb-2"&gt;{scanResult.message}&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;p className="text-white/90 text-lg mb-8"&gt;{scanResult.detail}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>{scanResult.data &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 w-full max-w-xs border border-white/20 shadow-xl text-left"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;div className="text-3xl font-bold mb-6 truncate text-center"&gt;{scanResult.data.name}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;div className="grid grid-cols-2 gap-4 text-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                        </span>&lt;div className="bg-white text-gray-900 rounded-2xl p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest"&gt;桌號&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-5xl font-black text-indigo-600"&gt;{scanResult.data.table}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                        </span>&lt;div className="bg-white text-gray-900 rounded-2xl p-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest"&gt;座位&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-5xl font-black text-indigo-600"&gt;{scanResult.data.seat}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div className="p-6 bg-black/10"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;button onClick={() =&gt; { setScanResult(null); startCamera(); }} className="w-full bg-white text-gray-900 py-5 rounded-2xl font-black text-2xl shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-3"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;Icon name="QrCode" size={28} /&gt; 繼續掃描</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>)}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{activeTab === 'list' &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 max-w-lg mx-auto flex flex-col h-full"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="flex items-center justify-between mb-4"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h2 className="text-2xl font-black text-gray-800"&gt;賓客名單&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={syncWithGoogleSheet} disabled={isLoading} className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2"&gt;同步資料&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-gray-100 flex-1"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>{guests.map((g, i) =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div key={i} className="p-4 border-b border-gray-50 flex justify-between items-center"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;p className="font-bold text-lg"&gt;{g.name}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                                </span>&lt;p className="text-xs text-gray-400 font-mono"&gt;{g.id} • {g.table}-{g.seat}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>{g.status === 'checked' &amp;&amp; &lt;Icon name="CheckCircle" className="text-green-500" size={24} /&gt;}</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;CompanyBrand /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>)}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                        </span>{activeTab === 'settings' &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 max-w-lg mx-auto flex flex-col h-full"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="bg-white p-6 rounded-3xl shadow-sm border border-indigo-100"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h2 className="font-bold text-xl mb-4 text-indigo-700"&gt;API 設定&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;input type="text" value={apiUrl} onChange={(e) =&gt; setApiUrl(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-mono mb-4 outline-none" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={syncWithGoogleSheet} disabled={isLoading} className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg active:scale-95"&gt;下載雲端名單&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="flex-grow"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;CompanyBrand /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;nav className="bg-white border-t border-gray-100 pb-safe shadow-inner z-40 no-print"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-around items-center h-20"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button onClick={() =&gt; setActiveTab('scan')} className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${activeTab === 'scan' ? 'text-indigo-600' : 'text-gray-300'}`}&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;Icon name="Camera" size={28} /&gt; &lt;span className="text-[10px] font-black uppercase"&gt;Scan&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button onClick={() =&gt; { if(isAdmin) setActiveTab('list'); else setShowLoginModal(true); }} className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${activeTab === 'list' ? 'text-indigo-600' : 'text-gray-300'}`}&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;Icon name={isAdmin ? "User" : "Lock"} size={28} /&gt; &lt;span className="text-[10px] font-black uppercase"&gt;List&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;button onClick={() =&gt; { if(isAdmin) setActiveTab('settings'); else setShowLoginModal(true); }} className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${activeTab === 'settings' ? 'text-indigo-600' : 'text-gray-300'}`}&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;Icon name={isAdmin ? "Database" : "Lock"} size={28} /&gt; &lt;span className="text-[10px] font-black uppercase"&gt;Data&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/nav&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>{showLoginModal &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-6"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl animate-in zoom-in duration-300"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;h3 className="text-2xl font-black text-gray-800 text-center mb-8 uppercase"&gt;Login&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="grid grid-cols-3 gap-4 mb-10 text-xl font-black"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>{[1,2,3,4,5,6,7,8,9, '✕', 0, '⌫'].map(v =&gt; (</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;button key={v} onClick={() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>if(v === '✕') setShowLoginModal(false);</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>else if(v === '⌫') setPasswordInput(p =&gt; p.slice(0,-1));</p>
-<p class="p1"><span class="Apple-converted-space">                                            </span>else if(passwordInput.length &lt; 4) setPasswordInput(p =&gt; p + v);</p>
-<p class="p1"><span class="Apple-converted-space">                                        </span>}} className="h-14 rounded-2xl bg-gray-50 active:bg-indigo-600 active:text-white transition-all"&gt;{v}&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>))}</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;button onClick={() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>if(passwordInput === ADMIN_PASSWORD) { setIsAdmin(true); setShowLoginModal(false); setActiveTab('list'); }</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>else { setPasswordInput(''); alert('密碼錯誤'); }</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>}} className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg"&gt;進入管理模式&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="mt-8 text-center text-gray-300 text-[10px] font-bold tracking-widest"&gt;{COMPANY_NAME_ZH} • v{APP_VERSION}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>)}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>{showManualInput &amp;&amp; (</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center no-print"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div className="bg-white w-full max-w-md rounded-t-[2rem] sm:rounded-[2rem] p-8 shadow-2xl animate-in slide-in-from-bottom duration-300"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div className="flex justify-between items-center mb-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;h3 className="text-2xl font-black"&gt;手動輸入票號&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={() =&gt; setShowManualInput(false)} className="bg-gray-100 p-2 rounded-full active:scale-90 transition-transform"&gt;&lt;Icon name="X" size={20}/&gt;&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;input autoFocus type="text" placeholder="例: A001" className="w-full text-3xl font-black p-5 bg-gray-50 border-2 border-indigo-100 rounded-2xl focus:border-indigo-500 outline-none mb-8 text-center uppercase tracking-widest" onKeyDown={(e) =&gt; { if(e.key === 'Enter') { handleScanSuccess(e.target.value); setShowManualInput(false); } }} /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                                </span>&lt;button onClick={() =&gt; { const val = document.querySelector('input[type="text"]').value; handleScanSuccess(val); setShowManualInput(false); }} className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg active:scale-95 transition-transform text-center uppercase"&gt;OK&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>)}</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>function ScannerComponent({ onScan }) {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                </span>const scanner = new Html5QrcodeScanner("reader", {<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>fps: 20,<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>qrbox: (viewWidth, viewHeight) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>const boxSize = Math.floor(Math.min(viewWidth, viewHeight) * 0.75);</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>return { width: boxSize, height: boxSize };</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>aspectRatio: 1.0,<span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">                    </span>showTorchButtonIfSupported: true,</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>rememberLastUsedCamera: true</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}, false);</p>
-<p class="p1"><span class="Apple-converted-space">                </span>scanner.render((text) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>scanner.clear().then(() =&gt; onScan(text));</p>
-<p class="p1"><span class="Apple-converted-space">                </span>}, () =&gt; {});</p>
-<p class="p1"><span class="Apple-converted-space">                </span>return () =&gt; scanner.clear().catch(()=&gt;{});</p>
-<p class="p1"><span class="Apple-converted-space">            </span>}, [onScan]);</p>
-<p class="p1"><span class="Apple-converted-space">            </span>return &lt;div id="reader" className="w-full h-full bg-black"&gt;&lt;/div&gt;;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const root = ReactDOM.createRoot(document.getElementById('root'));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>root.render(&lt;App /&gt;);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="zh-TW"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;活動報到系統 - 日安匕禾&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="theme-color" content="#4F46E5"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 移動端優化：全螢幕 App 體驗 --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"&gt;</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">    </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;!-- 1. 載入 Tailwind CSS &amp; React &amp; 掃描模組 --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/@babel/standalone/babel.min.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/html5-qrcode" type="text/javascript"&gt;&lt;/script&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@media print {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>@page { margin: 1cm; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>body * { visibility: hidden; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>.print-area, .print-area * { visibility: visible; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>.print-area { position: absolute; left: 0; top: 0; width: 100%; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>.no-print { display: none !important; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>/* 按鈕呼吸動畫 */</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes pulse-indigo {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(79, 70, 229, 0); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.btn-ready { animation: pulse-indigo 2s infinite; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.brand-footer { padding: 2rem 0; text-align: center; width: 100%; margin-top: auto; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#reader { border: none !important; overflow: hidden; border-radius: 1.5rem; background: #000; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#reader video { object-fit: cover !important; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body class="bg-gray-50 h-screen overflow-hidden text-gray-900"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="root" class="h-full"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script type="text/babel"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const { useState, useEffect, useRef } = React;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const ADMIN_PASSWORD = '0000';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwTBjHVnzYJW53_inuVIaMJ0JZYpChnKsHJQkAmTB9uvV8BQPBuVTcSxN67TycpDkt8/exec";</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const APP_VERSION = 'v1.4.1';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const COMPANY_NAME_ZH = '日安匕禾';<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const COMPANY_NAME_EN = 'BEAVER TECH SERVIE';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// --- 圖示組件 ---</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const Icon = ({ name, size = 20, className = "" }) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const icons = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>Camera: &lt;&gt;&lt;path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/&gt;&lt;circle cx="12" cy="13" r="3"/&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>QrCode: &lt;&gt;&lt;rect x="3" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="3" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="14" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;rect x="3" y="14" width="7" height="7"&gt;&lt;/rect&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>User: &lt;&gt;&lt;path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"&gt;&lt;/path&gt;&lt;circle cx="12" cy="7" r="4"&gt;&lt;/circle&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>CheckCircle: &lt;&gt;&lt;path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"&gt;&lt;/path&gt;&lt;polyline points="22 4 12 14.01 9 11.01"&gt;&lt;/polyline&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>XCircle: &lt;&gt;&lt;circle cx="12" cy="12" r="10"&gt;&lt;/circle&gt;&lt;line x1="15" y1="9" x2="9" y2="15"&gt;&lt;/line&gt;&lt;line x1="9" y1="9" x2="15" y2="15"&gt;&lt;/line&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>AlertTriangle: &lt;&gt;&lt;path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"&gt;&lt;/path&gt;&lt;line x1="12" y1="9" x2="12" y2="13"&gt;&lt;/line&gt;&lt;line x1="12" y1="17" x2="12.01" y2="17"&gt;&lt;/line&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>RefreshCw: &lt;&gt;&lt;polyline points="23 4 23 10 17 10"&gt;&lt;/polyline&gt;&lt;polyline points="1 20 1 14 7 14"&gt;&lt;/polyline&gt;&lt;path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"&gt;&lt;/path&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>Database: &lt;&gt;&lt;ellipse cx="12" cy="5" rx="9" ry="3"&gt;&lt;/ellipse&gt;&lt;path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"&gt;&lt;/path&gt;&lt;path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"&gt;&lt;/path&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>X: &lt;&gt;&lt;line x1="18" y1="6" x2="6" y2="18"&gt;&lt;/line&gt;&lt;line x1="6" y1="6" x2="18" y2="18"&gt;&lt;/line&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>Hash: &lt;&gt;&lt;line x1="4" y1="9" x2="20" y2="9"&gt;&lt;/line&gt;&lt;line x1="4" y1="15" x2="20" y2="15"&gt;&lt;/line&gt;&lt;line x1="10" y1="3" x2="8" y2="21"&gt;&lt;/line&gt;&lt;line x1="16" y1="3" x2="14" y2="21"&gt;&lt;/line&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>Lock: &lt;&gt;&lt;rect x="3" y="11" width="18" height="11" rx="2" ry="2"&gt;&lt;/rect&gt;&lt;path d="M7 11V7a5 5 0 0 1 10 0v4"&gt;&lt;/path&gt;&lt;/&gt;,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>Cloud: &lt;path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"&gt;&lt;/path&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;svg<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>xmlns="http://www.w3.org/2000/svg"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>width={size}<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>height={size}<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>viewBox="0 0 24 24"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>fill="none"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>stroke="currentColor"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>strokeWidth="2"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>strokeLinecap="round"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>strokeLinejoin="round"<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>className={className}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{icons[name] || &lt;circle cx="12" cy="12" r="10" /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/svg&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const CompanyBrand = () =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div className="brand-footer no-print"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="w-12 h-0.5 bg-gray-200 mx-auto mb-4 opacity-50"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p className="font-bold text-gray-500 tracking-widest"&gt;{COMPANY_NAME_ZH}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p className="text-[10px] uppercase tracking-tighter text-gray-400 mt-1"&gt;{COMPANY_NAME_EN}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p className="mt-2 opacity-30 font-mono text-[9px] tracking-widest"&gt;BUILD {APP_VERSION}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function App() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [activeTab, setActiveTab] = useState('scan');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [guests, setGuests] = useState([]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [scanResult, setScanResult] = useState(null);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [showManualInput, setShowManualInput] = useState(false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [isScanning, setIsScanning] = useState(false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [isAdmin, setIsAdmin] = useState(false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [showLoginModal, setShowLoginModal] = useState(false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [passwordInput, setPasswordInput] = useState('');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [apiUrl, setApiUrl] = useState(DEFAULT_API_URL);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const [isLoading, setIsLoading] = useState(false);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>setGuests([{ id: 'DEMO01', name: '測試賓客', table: '01', seat: '1', status: 'pending' }]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, []);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const handleScanSuccess = (code) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>setIsScanning(false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const cleanCode = code.trim();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (!cleanCode) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if(navigator.vibrate) navigator.vibrate(200);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const guestIndex = guests.findIndex(g =&gt; g.id.toLowerCase() === cleanCode.toLowerCase());</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (guestIndex === -1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>setScanResult({ type: 'error', message: '無效票券', detail: `ID: ${cleanCode}`, color: 'red' });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const guest = guests[guestIndex];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (guest.status === 'checked') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>setScanResult({ type: 'duplicate', message: '重複掃描', detail: `已於 ${guest.checkInTime || '稍早'} 入場`, data: guest, color: 'yellow' });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>const newGuests = [...guests];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>const timeStr = new Date().toLocaleTimeString('zh-TW', {hour: '2-digit', minute:'2-digit'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>newGuests[guestIndex] = { ...guest, status: 'checked', checkInTime: timeStr };</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>setGuests(newGuests);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>setScanResult({ type: 'success', message: '報到成功', data: newGuests[guestIndex], color: 'green' });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>fetch(`${apiUrl}?action=check_in`, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ id: cleanCode }) }).catch(()=&gt;{});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const startCamera = async () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>stream.getTracks().forEach(t =&gt; t.stop());</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>setIsScanning(true);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} catch (err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>alert("無法啟動相機。請確認瀏覽器設定已允許相機權限。");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const syncWithGoogleSheet = async () =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (!apiUrl) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>setIsLoading(true);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const response = await fetch(`${apiUrl}?action=read&amp;t=${new Date().getTime()}`);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const json = await response.json();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (json.status === 'success') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>setGuests(json.data);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>alert("名單同步完成！");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} catch (error) { alert("同步失敗。"); }<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>finally { setIsLoading(false); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div className="flex flex-col h-full overflow-hidden select-none"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;header className={`p-4 pb-6 shadow-md z-10 transition-colors no-print ${isAdmin ? 'bg-gray-900' : 'bg-indigo-600'}`}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-between items-center text-white"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;h1 className="text-xl font-bold flex items-center gap-2"&gt;&lt;Icon name="CheckCircle" className="w-6 h-6" /&gt; 接待報到系統&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="text-xs bg-black/20 px-3 py-1 rounded-full font-mono"&gt;{guests.filter(g =&gt; g.status === 'checked').length} / {guests.length}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/header&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;main className="flex-1 overflow-y-auto relative bg-gray-50 flex flex-col pt-6 px-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>{activeTab === 'scan' &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 flex flex-col items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>{!scanResult ? (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className="w-full max-w-sm flex flex-col items-center flex-1 h-full"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div className="flex-1 flex flex-col items-center justify-center w-full min-h-[350px]"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>{isScanning ? (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="w-full aspect-square bg-black rounded-3xl overflow-hidden shadow-2xl relative border-4 border-white mx-auto"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;ScannerComponent onScan={handleScanSuccess} /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;button onClick={() =&gt; setIsScanning(false)} className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full backdrop-blur-sm z-20"&gt;&lt;Icon name="X" size={20} /&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>) : (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;button onClick={startCamera} className="w-full aspect-square bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-3xl shadow-xl flex flex-col items-center justify-center text-white active:scale-95 transition-transform btn-ready"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;Icon name="QrCode" className="w-24 h-24 mb-4 opacity-90" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;span className="text-3xl font-black tracking-wider text-center px-4 leading-tight"&gt;啟動相機&lt;br/&gt;開始掃描&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;span className="text-indigo-200 text-sm mt-3"&gt;(點擊後請選「允許」)&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;button onClick={() =&gt; setShowManualInput(true)} className="w-full py-4 bg-white border-2 border-indigo-100 text-indigo-600 rounded-2xl font-bold text-lg shadow-sm flex items-center justify-center gap-2 active:bg-indigo-50 mt-8 mb-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;Icon name="Hash" size={20} /&gt; 手動輸入編號</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;CompanyBrand /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>) : (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;div className={`absolute inset-0 z-20 flex flex-col ${scanResult.type === 'success' ? 'bg-green-500' : scanResult.type === 'duplicate' ? 'bg-yellow-500' : 'bg-red-500'}`}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div className="flex-1 flex flex-col items-center justify-center p-6 text-white text-center animate-in fade-in zoom-in duration-300"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;div className="mb-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>{scanResult.type === 'success' &amp;&amp; &lt;Icon name="CheckCircle" className="w-24 h-24" /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>{scanResult.type === 'duplicate' &amp;&amp; &lt;Icon name="AlertTriangle" className="w-24 h-24" /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>{scanResult.type === 'error' &amp;&amp; &lt;Icon name="XCircle" className="w-24 h-24" /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;h2 className="text-4xl font-black mb-2"&gt;{scanResult.message}&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;p className="text-white/90 text-lg mb-8"&gt;{scanResult.detail}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>{scanResult.data &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 w-full max-w-xs border border-white/20 shadow-xl text-left"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div className="text-3xl font-bold mb-6 truncate text-center"&gt;{scanResult.data.name}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;div className="grid grid-cols-2 gap-4 text-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;div className="bg-white text-gray-900 rounded-2xl p-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest"&gt;桌號&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-5xl font-black text-indigo-600"&gt;{scanResult.data.table}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;div className="bg-white text-gray-900 rounded-2xl p-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest"&gt;座位&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                            </span>&lt;div className="text-5xl font-black text-indigo-600"&gt;{scanResult.data.seat}&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div className="p-6 bg-black/10"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;button onClick={() =&gt; { setScanResult(null); startCamera(); }} className="w-full bg-white text-gray-900 py-5 rounded-2xl font-black text-2xl shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;Icon name="QrCode" size={28} /&gt; 繼續掃描</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>{activeTab === 'list' &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 max-w-lg mx-auto flex flex-col h-full"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="flex items-center justify-between mb-4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;h2 className="text-2xl font-black text-gray-800 tracking-tighter"&gt;賓客名單&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={syncWithGoogleSheet} disabled={isLoading} className="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>{isLoading ? &lt;Icon name="RefreshCw" className="animate-spin" size={16}/&gt; : &lt;Icon name="RefreshCw" size={16}/&gt;} 同步資料</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="bg-white rounded-3xl shadow-sm overflow-hidden border border-gray-100 flex-1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{guests.map((g, i) =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;div key={i} className="p-4 border-b border-gray-50 flex justify-between items-center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;p className="font-bold text-lg"&gt;{g.name}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                                </span>&lt;p className="text-xs text-gray-400 font-mono"&gt;{g.id} • {g.table}-{g.seat}&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>{g.status === 'checked' &amp;&amp; &lt;Icon name="CheckCircle" className="text-green-500" size={24} /&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{guests.length === 0 &amp;&amp; &lt;div className="p-12 text-center text-gray-300"&gt;暫無名單&lt;/div&gt;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;CompanyBrand /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>{activeTab === 'settings' &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="flex-1 max-w-lg mx-auto flex flex-col h-full"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="bg-white p-6 rounded-3xl shadow-sm border border-indigo-100"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;h2 className="font-bold text-xl mb-4 text-indigo-700"&gt;API 設定&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;input type="text" value={apiUrl} onChange={(e) =&gt; setApiUrl(e.target.value)} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-mono mb-4 outline-none" /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={syncWithGoogleSheet} disabled={isLoading} className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg active:scale-95"&gt;下載名單&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="flex-grow"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;CompanyBrand /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/main&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;nav className="bg-white border-t border-gray-100 pb-safe shadow-inner z-40 no-print"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="flex justify-around items-center h-20"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;button onClick={() =&gt; setActiveTab('scan')} className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${activeTab === 'scan' ? 'text-indigo-600' : 'text-gray-300'}`}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Icon name="Camera" size={28} /&gt; &lt;span className="text-[10px] font-black uppercase"&gt;Scan&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;button onClick={() =&gt; { if(isAdmin) setActiveTab('list'); else setShowLoginModal(true); }} className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${activeTab === 'list' ? 'text-indigo-600' : 'text-gray-300'}`}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Icon name={isAdmin ? "User" : "Lock"} size={28} /&gt; &lt;span className="text-[10px] font-black uppercase"&gt;List&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;button onClick={() =&gt; { if(isAdmin) setActiveTab('settings'); else setShowLoginModal(true); }} className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${activeTab === 'settings' ? 'text-indigo-600' : 'text-gray-300'}`}&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;Icon name={isAdmin ? "Database" : "Lock"} size={28} /&gt; &lt;span className="text-[10px] font-black uppercase"&gt;Data&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/nav&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{showLoginModal &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl animate-in zoom-in duration-300"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;h3 className="text-2xl font-black text-gray-800 text-center mb-8 uppercase"&gt;Login&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="grid grid-cols-3 gap-4 mb-10 text-xl font-black"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>{[1,2,3,4,5,6,7,8,9, '✕', 0, '⌫'].map(v =&gt; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>&lt;button key={v} onClick={() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>if(v === '✕') setShowLoginModal(false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>else if(v === '⌫') setPasswordInput(p =&gt; p.slice(0,-1));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                            </span>else if(passwordInput.length &lt; 4) setPasswordInput(p =&gt; p + v);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                        </span>}} className="h-14 rounded-2xl bg-gray-50 active:bg-indigo-600 active:text-white transition-all"&gt;{v}&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>))}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;button onClick={() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>if(passwordInput === ADMIN_PASSWORD) { setIsAdmin(true); setShowLoginModal(false); setActiveTab('list'); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>else { setPasswordInput(''); alert('密碼錯誤'); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>}} className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg"&gt;進入管理模式&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="mt-8 text-center text-gray-300 text-[10px] font-bold tracking-widest"&gt;{COMPANY_NAME_ZH} • v1.4.1&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{showManualInput &amp;&amp; (</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center no-print"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;div className="bg-white w-full max-w-md rounded-t-[2rem] sm:rounded-[2rem] p-8 shadow-2xl animate-in slide-in-from-bottom duration-300"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;div className="flex justify-between items-center mb-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;h3 className="text-2xl font-black"&gt;手動輸入票號&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                    </span>&lt;button onClick={() =&gt; setShowManualInput(false)} className="bg-gray-100 p-2 rounded-full active:scale-90 transition-transform"&gt;&lt;Icon name="X" size={20}/&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;input autoFocus type="text" placeholder="例: A001" className="w-full text-3xl font-black p-5 bg-gray-50 border-2 border-indigo-100 rounded-2xl focus:border-indigo-500 outline-none mb-8 text-center uppercase tracking-widest" onKeyDown={(e) =&gt; { if(e.key === 'Enter') { handleScanSuccess(e.target.value); setShowManualInput(false); } }} /&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                                </span>&lt;button onClick={() =&gt; { const val = document.querySelector('input[type="text"]').value; handleScanSuccess(val); setShowManualInput(false); }} className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg active:scale-95 transition-transform text-center uppercase"&gt;OK&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function ScannerComponent({ onScan }) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>useEffect(() =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const scanner = new Html5QrcodeScanner("reader", {<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>fps: 20,<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>qrbox: (viewWidth, viewHeight) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>const boxSize = Math.floor(Math.min(viewWidth, viewHeight) * 0.75);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>return { width: boxSize, height: boxSize };</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>aspectRatio: 1.0,<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>showTorchButtonIfSupported: true,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>rememberLastUsedCamera: true</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}, false);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>scanner.render((text) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>scanner.clear().then(() =&gt; onScan(text));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}, () =&gt; {});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return () =&gt; scanner.clear().catch(()=&gt;{});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, [onScan]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return &lt;div id="reader" className="w-full h-full bg-black"&gt;&lt;/div&gt;;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const root = ReactDOM.createRoot(document.getElementById('root'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>root.render(&lt;App /&gt;);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>
