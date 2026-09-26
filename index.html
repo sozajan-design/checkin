@@ -60,9 +60,10 @@
         const ADMIN_PASSWORD = '0000'; 
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwTBjHVnzYJW53_inuVIaMJ0JZYpChnKsHJQkAmTB9uvV8BQPBuVTcSxN67TycpDkt8/exec";
         
-        const APP_VERSION = 'v4.0.0';
-        const COMPANY_NAME_ZH = '臺中惠民扶輪社'; 
-        const COMPANY_NAME_EN = 'ROTARY DAY CHECK-IN';
+        const APP_VERSION = 'v4.1.0';
+        const ORGANIZER_NAME = '臺中惠民扶輪社';
+        const COMPANY_NAME_ZH = '日安匕禾'; 
+        const COMPANY_NAME_EN = 'BEAVER TECH SYSTEM';
 
         // --- Icon ---
         const Icon = ({ name, size = 20, className = "" }) => {
@@ -339,7 +340,7 @@
 
             const handleSendLine = (guest) => {
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(guest.id)}`;
-                const text = `【${COMPANY_NAME_ZH} 扶輪日入場券】\n\n票券：${guest.name}\nTicket ID：${guest.id}\n\n請出示以下 QR Code 入場：\n${qrUrl}`;
+                const text = `【${ORGANIZER_NAME} 扶輪日入場券】\n\n票券：${guest.name}\nTicket ID：${guest.id}\n\n請出示以下 QR Code 入場：\n${qrUrl}`;
                 window.open(`https://line.me/R/msg/text/?${encodeURIComponent(text)}`, '_blank');
             };
 
