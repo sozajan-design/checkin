@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>活動報到系統 - 日安匕禾</title>
+    <title>臺中惠民扶輪社｜扶輪日報到系統</title>
     <meta name="theme-color" content="#4F46E5">
     
     <!-- PWA -->
@@ -60,9 +60,9 @@
         const ADMIN_PASSWORD = '0000'; 
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwTBjHVnzYJW53_inuVIaMJ0JZYpChnKsHJQkAmTB9uvV8BQPBuVTcSxN67TycpDkt8/exec";
         
-        const APP_VERSION = 'v3.2.1';
-        const COMPANY_NAME_ZH = '日安匕禾'; 
-        const COMPANY_NAME_EN = 'BEAVER TECH SERVIE';
+        const APP_VERSION = 'v4.0.0';
+        const COMPANY_NAME_ZH = '臺中惠民扶輪社'; 
+        const COMPANY_NAME_EN = 'ROTARY DAY CHECK-IN';
 
         // --- Icon ---
         const Icon = ({ name, size = 20, className = "" }) => {
@@ -145,7 +145,7 @@
 
         function App() {
             const [activeTab, setActiveTab] = useState('scan');
-            const [guests, setGuests] = useState([{ id: 'DEMO01', name: '測試賓客', table: '01', seat: '1', status: 'pending', email: 'demo@example.com' }]);
+            const [guests, setGuests] = useState([{ id: 'DEMO01', name: '測試票券-1', orderId: 'ORD-DEMO', status: 'pending', email: 'demo@example.com' }]);
             const [searchTerm, setSearchTerm] = useState('');
             const [scanResult, setScanResult] = useState(null);
             const [showManualInput, setShowManualInput] = useState(false);
@@ -201,7 +201,7 @@
 
             const filteredGuests = useMemo(() => {
                 const term = searchTerm.toLowerCase();
-                return guests.filter(g => (g.name||"").toLowerCase().includes(term) || (g.id||"").toLowerCase().includes(term) || (g.table||"").toString().includes(term));
+                return guests.filter(g => (g.name||"").toLowerCase().includes(term) || (g.id||"").toLowerCase().includes(term) || (g.orderId||"").toLowerCase().includes(term));
             }, [guests, searchTerm]);
 
             const totalGuests = guests.length;
@@ -223,9 +223,24 @@
                 }
             };
 
+            const extractTicketId = (raw) => {
+                const text = String(raw || '').trim();
+                if (!text) return '';
+                try {
+                    const url = new URL(text);
+                    const ticket = url.searchParams.get('ticket');
+                    if (ticket) return ticket.trim();
+                } catch (e) {}
+                const match = text.match(/[?&]ticket=([^&#]+)/i);
+                if (match && match[1]) {
+                    try { return decodeURIComponent(match[1]).trim(); } catch (e) { return match[1].trim(); }
+                }
+                return text;
+            };
+
             const handleScanSuccess = (code) => {
                 setIsScanning(false);
-                const cleanCode = code.trim();
+                const cleanCode = extractTicketId(code);
                 if (!cleanCode) return;
                 if(navigator.vibrate) navigator.vibrate(200);
 
@@ -272,9 +287,9 @@
                 const guestCards = guests.map(g => `
                     <div style="display:inline-block; width:45%; margin:2%; padding:10px; border:1px solid #eee; text-align:center; page-break-inside:avoid; font-family:sans-serif;">
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(g.id)}" style="width:120px; height:120px;" />
-                        <div style="font-size:20px; font-weight:black; margin-top:5px;">${g.table}-${g.seat}</div>
-                        <div style="font-size:14px; color:#333;">${g.name}</div>
-                        <div style="font-size:9px; color:#999; margin-top:3px;">ID: ${g.id}</div>
+                        <div style="font-size:18px; font-weight:900; margin-top:5px;">${g.name}</div>
+                        <div style="font-size:10px; color:#777; margin-top:3px;">${g.orderId || ''}</div>
+                        <div style="font-size:9px; color:#999; margin-top:3px;">Ticket ID: ${g.id}</div>
                     </div>
                 `).join('');
                 printWindow.document.write(`<html><head><title>QR Code</title></head><body onload="window.print();"><h2 style="text-align:center;">名冊</h2><div>${guestCards}</div></body></html>`);
@@ -324,7 +339,7 @@
 
             const handleSendLine = (guest) => {
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(guest.id)}`;
-                const text = `【${COMPANY_NAME_ZH} 活動入場券】\n\n貴賓：${guest.name}\n桌號：${guest.table} 桌\n座位：${guest.seat}\n\n請出示以下連結中的 QR Code 入場：\n${qrUrl}`;
+                const text = `【${COMPANY_NAME_ZH} 扶輪日入場券】\n\n票券：${guest.name}\nTicket ID：${guest.id}\n\n請出示以下 QR Code 入場：\n${qrUrl}`;
                 window.open(`https://line.me/R/msg/text/?${encodeURIComponent(text)}`, '_blank');
             };
 
@@ -411,15 +426,9 @@
                                             {scanResult.data && (
                                                 <div className="bg-white text-gray-900 rounded-3xl p-6 w-full max-w-xs shadow-xl text-center mt-4">
                                                     <div className="text-2xl font-bold mb-4">{scanResult.data.name}</div>
-                                                    <div className="grid grid-cols-2 gap-3">
-                                                        <div className="bg-gray-50 p-2 rounded-xl border border-gray-100 text-center">
-                                                            <div className="text-[10px] text-gray-400 font-bold uppercase">桌號</div>
-                                                            <div className="text-3xl font-black text-indigo-600 leading-none mt-1">{scanResult.data.table}</div>
-                                                        </div>
-                                                        <div className="bg-gray-50 p-2 rounded-xl border border-gray-100 text-center">
-                                                            <div className="text-[10px] text-gray-400 font-bold uppercase">座位</div>
-                                                            <div className="text-3xl font-black text-indigo-600 leading-none mt-1">{scanResult.data.seat}</div>
-                                                        </div>
+                                                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
+                                                        <div className="text-[10px] text-gray-400 font-bold uppercase">訂單編號</div>
+                                                        <div className="text-sm font-black text-indigo-600 mt-1 break-all">{scanResult.data.orderId || '-'}</div>
                                                     </div>
                                                 </div>
                                             )}
@@ -438,7 +447,7 @@
                             <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
                                 <div className="p-4 bg-white border-b border-gray-100 shadow-sm">
                                     <div className="flex items-center justify-between mb-3">
-                                        <h2 className="text-xl font-bold text-gray-800">賓客名冊</h2>
+                                        <h2 className="text-xl font-bold text-gray-800">扶輪日入場名單</h2>
                                         <button onClick={syncWithGoogleSheet} disabled={isLoading} className="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 active:scale-95">
                                             <Icon name="RefreshCw" className={isLoading ? "animate-spin" : ""} size={14}/> 同步
                                         </button>
@@ -466,7 +475,7 @@
                                                         <span className="bg-gray-100 text-gray-400 text-[7px] font-black px-1 py-0.5 rounded uppercase leading-none">未到</span>
                                                     )}
                                                 </div>
-                                                <p className="text-[9px] text-gray-400 font-mono mt-0.5 leading-none uppercase">T{g.table}-S{g.seat} • {g.id}</p>
+                                                <p className="text-[9px] text-gray-400 font-mono mt-0.5 leading-none uppercase">{g.orderId || 'NO-ORDER'} • {g.id}</p>
                                             </div>
                                             <div className="flex gap-1 items-center">
                                                 <button onClick={() => setShowQRCodeModal(g)} className="p-1.5 bg-gray-50 rounded-lg text-gray-400 border border-gray-100"><Icon name="QrCode" size={14}/></button>
@@ -495,7 +504,7 @@
                                             <Icon name="Send" size={18}/> 群發所有 QR Code 到信箱
                                         </button>
                                         <button onClick={handleOpenPrintWindow} className="w-full py-3 bg-gray-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 active:bg-black transition-transform">
-                                            <Icon name="Printer" size={18}/> 開啟列印頁面 (產生 QR 名冊)
+                                            <Icon name="Printer" size={18}/> 開啟列印頁面 (產生 QR 票券名冊)
                                         </button>
                                     </div>
                                 </div>
