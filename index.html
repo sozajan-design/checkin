@@ -60,7 +60,7 @@
         const ADMIN_PASSWORD = '0000'; 
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwTBjHVnzYJW53_inuVIaMJ0JZYpChnKsHJQkAmTB9uvV8BQPBuVTcSxN67TycpDkt8/exec";
         
-        const APP_VERSION = 'v4.1.0';
+        const APP_VERSION = 'v4.2.0';
         const ORGANIZER_NAME = '臺中惠民扶輪社';
         const COMPANY_NAME_ZH = '日安匕禾'; 
         const COMPANY_NAME_EN = 'BEAVER TECH SYSTEM';
@@ -169,6 +169,9 @@
             const [cameraList, setCameraList] = useState([]);
             const [showCameraSelect, setShowCameraSelect] = useState(false);
             const [selectedCameraId, setSelectedCameraId] = useState(null);
+            const [scanResumeSignal, setScanResumeSignal] = useState(0);
+            const [successCountdown, setSuccessCountdown] = useState(3);
+            const scanBusyRef = useRef(false);
 
             // 自動同步名單 (Auto Sync in List View)
             useEffect(() => {
@@ -239,26 +242,123 @@
                 return text;
             };
 
-            const handleScanSuccess = (code) => {
-                setIsScanning(false);
-                const cleanCode = extractTicketId(code);
-                if (!cleanCode) return;
-                if(navigator.vibrate) navigator.vibrate(200);
-
-                const guestIndex = guests.findIndex(g => g.id.toLowerCase() === cleanCode.toLowerCase());
-                if (guestIndex === -1) {
-                    setScanResult({ type: 'error', message: '無效票券', detail: `ID: ${cleanCode}`, color: 'red' });
-                } else {
-                    const guest = guests[guestIndex];
-                    if (guest.status === 'checked') {
-                        setScanResult({ type: 'duplicate', message: '重複掃描', detail: `已報到`, data: guest, color: 'yellow' });
-                    } else {
-                        const newGuests = [...guests];
-                        newGuests[guestIndex] = { ...guest, status: 'checked', checkInTime: new Date().toLocaleTimeString('zh-TW', {hour:'2-digit', minute:'2-digit'}) };
-                        setGuests(newGuests);
-                        setScanResult({ type: 'success', message: '報到成功', data: newGuests[guestIndex], color: 'green' });
-                        fetch(`${apiUrl}?action=check_in`, { method: 'POST', headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ id: cleanCode }) }).catch(()=>{});
+            const playFeedback = (type) => {
+                try {
+                    if (navigator.vibrate) {
+                        navigator.vibrate(type === 'success' ? 90 : [220, 120, 220]);
                     }
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioCtx) return;
+                    const ctx = new AudioCtx();
+                    const beep = (freq, startAt, duration, gainValue) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(gainValue, ctx.currentTime + startAt);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startAt + duration);
+                        osc.connect(gain); gain.connect(ctx.destination);
+                        osc.start(ctx.currentTime + startAt);
+                        osc.stop(ctx.currentTime + startAt + duration);
+                    };
+                    if (type === 'success') {
+                        beep(880, 0, 0.12, 0.08);
+                    } else {
+                        beep(330, 0, 0.16, 0.08);
+                        beep(260, 0.2, 0.18, 0.08);
+                    }
+                    setTimeout(() => { try { ctx.close(); } catch(e) {} }, 700);
+                } catch (e) {}
+            };
+
+            const resumeScanner = () => {
+                setScanResult(null);
+                setSuccessCountdown(3);
+                scanBusyRef.current = false;
+                setScanResumeSignal(v => v + 1);
+            };
+
+            useEffect(() => {
+                if (!scanResult || scanResult.type !== 'success') return;
+                setSuccessCountdown(3);
+                const interval = setInterval(() => {
+                    setSuccessCountdown(v => Math.max(1, v - 1));
+                }, 1000);
+                const timer = setTimeout(() => {
+                    setScanResult(null);
+                    setSuccessCountdown(3);
+                    scanBusyRef.current = false;
+                    setScanResumeSignal(v => v + 1);
+                }, 3000);
+                return () => { clearInterval(interval); clearTimeout(timer); };
+            }, [scanResult]);
+
+            const handleScanSuccess = async (code) => {
+                if (scanBusyRef.current) return;
+                scanBusyRef.current = true;
+
+                const cleanCode = extractTicketId(code);
+                if (!cleanCode) {
+                    setScanResult({ type: 'error', message: '無效票券', detail: '沒有讀到有效的 Ticket ID。' });
+                    playFeedback('error');
+                    return;
+                }
+
+                // 相機保持開啟，只暫停 QR 辨識；後端確認完成後才顯示成功。
+                setScanResult({ type: 'processing', message: '正在驗證票券', detail: '請稍候，系統正在確認入場資格…' });
+
+                try {
+                    const response = await fetch(`${apiUrl}?action=check_in`, {
+                        method: 'POST',
+                        headers: { "Content-Type": "text/plain;charset=utf-8" },
+                        body: JSON.stringify({ id: cleanCode })
+                    });
+                    const json = await response.json();
+
+                    if (json.status === 'success') {
+                        const data = {
+                            id: cleanCode,
+                            name: json.data?.name || guests.find(g => String(g.id).toLowerCase() === cleanCode.toLowerCase())?.name || '',
+                            orderId: json.data?.orderId || guests.find(g => String(g.id).toLowerCase() === cleanCode.toLowerCase())?.orderId || '',
+                            checkInTime: json.data?.checkInTime || ''
+                        };
+                        setGuests(prev => prev.map(g => String(g.id).toLowerCase() === cleanCode.toLowerCase()
+                            ? { ...g, status: 'checked', checkInTime: data.checkInTime }
+                            : g));
+                        setScanResult({ type: 'success', message: '報到成功', detail: '已完成入場報到', data });
+                        playFeedback('success');
+                        return;
+                    }
+
+                    if (json.status === 'duplicate') {
+                        const data = {
+                            id: cleanCode,
+                            name: json.data?.name || guests.find(g => String(g.id).toLowerCase() === cleanCode.toLowerCase())?.name || '',
+                            orderId: guests.find(g => String(g.id).toLowerCase() === cleanCode.toLowerCase())?.orderId || '',
+                            checkInTime: json.data?.checkInTime || ''
+                        };
+                        setGuests(prev => prev.map(g => String(g.id).toLowerCase() === cleanCode.toLowerCase()
+                            ? { ...g, status: 'checked', checkInTime: data.checkInTime || g.checkInTime }
+                            : g));
+                        setScanResult({
+                            type: 'duplicate',
+                            message: '重複報到',
+                            detail: data.checkInTime ? `此票券已於 ${data.checkInTime} 完成報到` : '此票券已經完成報到',
+                            data
+                        });
+                        playFeedback('error');
+                        return;
+                    }
+
+                    setScanResult({ type: 'error', message: '無效票券', detail: json.message || `查無此票券：${cleanCode}` });
+                    playFeedback('error');
+                } catch (error) {
+                    setScanResult({
+                        type: 'error',
+                        message: '系統連線異常',
+                        detail: '本次報到尚未完成，請勿直接放行。請工作人員確認網路後再繼續。'
+                    });
+                    playFeedback('error');
                 }
             };
 
@@ -389,56 +489,79 @@
 
                     <main className="flex-1 overflow-y-auto relative flex flex-col no-print">
                         {activeTab === 'scan' && (
-                            <div className="flex-1 flex flex-col items-center p-4">
-                                {!scanResult ? (
-                                    <div className="w-full max-w-sm flex flex-col items-center flex-1 h-full">
-                                        <div className="flex-1 flex flex-col items-center justify-center w-full min-h-[350px]">
-                                            {isScanning ? (
-                                                <div className="w-full aspect-square bg-black rounded-3xl overflow-hidden shadow-2xl relative border-4 border-white">
-                                                    <ScannerComponent cameraId={selectedCameraId} onScan={handleScanSuccess} />
-                                                    
-                                                    {/* 切換鏡頭按鈕 */}
-                                                    <button onClick={() => { setIsScanning(false); handleResetCamera(); }} className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm flex items-center gap-1 z-20 active:scale-95"><Icon name="RefreshCw" size={12}/> 切換鏡頭</button>
-                                                    
-                                                    <button onClick={() => setIsScanning(false)} className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full z-20"><Icon name="X" size={20} /></button>
-                                                </div>
-                                            ) : (
-                                                <button onClick={startScanFlow} className="w-full aspect-square bg-gradient-to-br from-orange-500 to-pink-500 rounded-3xl shadow-xl flex flex-col items-center justify-center text-white active:scale-95 transition-transform btn-ready">
-                                                    <Icon name="QrCode" className="w-20 h-20 mb-4 opacity-90" />
-                                                    <span className="text-3xl font-black tracking-widest leading-none">啟動相機</span>
-                                                </button>
-                                            )}
-                                        </div>
-                                        <button onClick={() => setShowManualInput(true)} className="w-full py-3.5 bg-white border border-gray-200 text-indigo-600 rounded-2xl font-bold text-lg shadow-sm flex items-center justify-center gap-2 active:bg-gray-50 mt-6 mb-2">
-                                            <Icon name="Hash" size={20} /> 手動輸入 ID
-                                        </button>
-                                        <CompanyBrand />
+                            <div className="flex-1 flex flex-col items-center p-4 relative">
+                                <div className="w-full max-w-sm flex flex-col items-center flex-1 h-full">
+                                    <div className="flex-1 flex flex-col items-center justify-center w-full min-h-[350px]">
+                                        {isScanning ? (
+                                            <div className="w-full aspect-square bg-black rounded-3xl overflow-hidden shadow-2xl relative border-4 border-white">
+                                                <ScannerComponent cameraId={selectedCameraId} onScan={handleScanSuccess} resumeSignal={scanResumeSignal} />
+
+                                                <button onClick={() => { setIsScanning(false); setScanResult(null); scanBusyRef.current = false; handleResetCamera(); }} className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm flex items-center gap-1 z-20 active:scale-95"><Icon name="RefreshCw" size={12}/> 切換鏡頭</button>
+                                                <button onClick={() => { setIsScanning(false); setScanResult(null); scanBusyRef.current = false; }} className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full z-20"><Icon name="X" size={20} /></button>
+
+                                                {!scanResult && <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/55 text-white px-4 py-2 rounded-full text-xs font-bold backdrop-blur-sm z-20 whitespace-nowrap">相機持續待命・對準 QR Code 即可</div>}
+                                            </div>
+                                        ) : (
+                                            <button onClick={startScanFlow} className="w-full aspect-square bg-gradient-to-br from-orange-500 to-pink-500 rounded-3xl shadow-xl flex flex-col items-center justify-center text-white active:scale-95 transition-transform btn-ready">
+                                                <Icon name="QrCode" className="w-20 h-20 mb-4 opacity-90" />
+                                                <span className="text-3xl font-black tracking-widest leading-none">啟動相機</span>
+                                                <span className="text-sm font-bold mt-4 text-white/80">啟動一次即可連續掃描</span>
+                                            </button>
+                                        )}
                                     </div>
-                                ) : (
-                                    <div className={`absolute inset-0 z-20 flex flex-col ${scanResult.type === 'success' ? 'bg-green-500' : scanResult.type === 'duplicate' ? 'bg-yellow-500' : 'bg-red-500'}`}>
-                                        <div className="flex-1 flex flex-col items-center justify-center p-6 text-white text-center animate-in fade-in zoom-in duration-300">
+                                    <button onClick={() => setShowManualInput(true)} className="w-full py-3.5 bg-white border border-gray-200 text-indigo-600 rounded-2xl font-bold text-lg shadow-sm flex items-center justify-center gap-2 active:bg-gray-50 mt-6 mb-2">
+                                        <Icon name="Hash" size={20} /> 手動輸入 ID
+                                    </button>
+                                    <CompanyBrand />
+                                </div>
+
+                                {scanResult && (
+                                    <div className={`absolute inset-0 z-30 flex flex-col ${
+                                        scanResult.type === 'success' ? 'bg-green-500' :
+                                        scanResult.type === 'duplicate' ? 'bg-yellow-500' :
+                                        scanResult.type === 'processing' ? 'bg-indigo-600' : 'bg-red-500'
+                                    }`}>
+                                        <div className="flex-1 flex flex-col items-center justify-center p-6 text-white text-center animate-in fade-in zoom-in duration-200">
                                             <div className="mb-6">
                                                 {scanResult.type === 'success' && <Icon name="CheckCircle" className="w-20 h-20" />}
                                                 {scanResult.type === 'duplicate' && <Icon name="AlertTriangle" className="w-20 h-20" />}
                                                 {scanResult.type === 'error' && <Icon name="XCircle" className="w-20 h-20" />}
+                                                {scanResult.type === 'processing' && <Icon name="RefreshCw" className="w-20 h-20 animate-spin" />}
                                             </div>
                                             <h2 className="text-3xl font-black mb-2">{scanResult.message}</h2>
-                                            <p className="text-white/90 text-lg mb-8">{scanResult.detail}</p>
+                                            <p className="text-white/90 text-lg mb-6">{scanResult.detail}</p>
+
+                                            {(scanResult.type === 'duplicate' || scanResult.type === 'error') && (
+                                                <div className="mb-5 px-5 py-3 rounded-2xl bg-black/15 border border-white/30 text-xl font-black">
+                                                    ⚠️ 需要工作人員處理
+                                                </div>
+                                            )}
+
                                             {scanResult.data && (
-                                                <div className="bg-white text-gray-900 rounded-3xl p-6 w-full max-w-xs shadow-xl text-center mt-4">
+                                                <div className="bg-white text-gray-900 rounded-3xl p-6 w-full max-w-xs shadow-xl text-center mt-2">
                                                     <div className="text-2xl font-bold mb-4">{scanResult.data.name}</div>
                                                     <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                                                        <div className="text-[10px] text-gray-400 font-bold uppercase">訂單編號</div>
-                                                        <div className="text-sm font-black text-indigo-600 mt-1 break-all">{scanResult.data.orderId || '-'}</div>
+                                                        <div className="text-[10px] text-gray-400 font-bold uppercase">Ticket ID</div>
+                                                        <div className="text-sm font-black text-indigo-600 mt-1 break-all">{scanResult.data.id || '-'}</div>
                                                     </div>
+                                                    {scanResult.data.checkInTime && <div className="mt-3 text-xs text-gray-400">報到時間：{scanResult.data.checkInTime}</div>}
+                                                </div>
+                                            )}
+
+                                            {scanResult.type === 'success' && (
+                                                <div className="mt-7 bg-white/20 border border-white/30 rounded-2xl px-6 py-4 font-black text-xl">
+                                                    {successCountdown} 秒後自動繼續掃描
                                                 </div>
                                             )}
                                         </div>
-                                        <div className="p-6 bg-black/10">
-                                            <button onClick={() => { setScanResult(null); startScanFlow(); }} className="w-full bg-white text-gray-900 py-4 rounded-2xl font-black text-xl shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-3">
-                                                <Icon name="QrCode" size={24} /> 繼續掃描
-                                            </button>
-                                        </div>
+
+                                        {(scanResult.type === 'duplicate' || scanResult.type === 'error') && (
+                                            <div className="p-6 bg-black/10">
+                                                <button onClick={resumeScanner} className="w-full bg-white text-gray-900 py-4 rounded-2xl font-black text-xl shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-3">
+                                                    <Icon name="QrCode" size={24} /> 工作人員確認後繼續掃描
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -586,19 +709,55 @@
             );
         }
 
-        function ScannerComponent({ cameraId, onScan }) {
+        function ScannerComponent({ cameraId, onScan, resumeSignal }) {
+            const scannerRef = useRef(null);
+            const onScanRef = useRef(onScan);
+            const lockedRef = useRef(false);
+
+            useEffect(() => { onScanRef.current = onScan; }, [onScan]);
+
             useEffect(() => {
                 const html5QrCode = new Html5Qrcode("reader");
+                scannerRef.current = html5QrCode;
+                lockedRef.current = false;
                 const config = { fps: 20, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
-                html5QrCode.start(cameraId, config, 
-                    (decodedText) => {
-                        html5QrCode.stop().then(() => { html5QrCode.clear(); onScan(decodedText); }).catch(err => console.error(err));
-                    },
-                    (errorMessage) => { }
-                ).catch(err => { alert("相機啟動失敗，請重新嘗試或檢查權限。"); });
 
-                return () => { if (html5QrCode.isScanning) html5QrCode.stop().then(() => html5QrCode.clear()).catch(err => {}); };
-            }, [onScan]);
+                html5QrCode.start(
+                    cameraId,
+                    config,
+                    (decodedText) => {
+                        if (lockedRef.current) return;
+                        lockedRef.current = true;
+                        try {
+                            if (html5QrCode.isScanning) html5QrCode.pause(false);
+                        } catch (e) {}
+                        onScanRef.current(decodedText);
+                    },
+                    () => {}
+                ).catch(() => {
+                    alert("相機啟動失敗，請重新嘗試或檢查權限。");
+                });
+
+                return () => {
+                    scannerRef.current = null;
+                    try {
+                        if (html5QrCode.isScanning) {
+                            html5QrCode.stop().then(() => html5QrCode.clear()).catch(() => {});
+                        } else {
+                            html5QrCode.clear();
+                        }
+                    } catch (e) {}
+                };
+            }, [cameraId]);
+
+            useEffect(() => {
+                if (!resumeSignal) return;
+                const scanner = scannerRef.current;
+                lockedRef.current = false;
+                if (!scanner) return;
+                try { scanner.resume(); } catch (e) {}
+            }, [resumeSignal]);
+
             return <div id="reader"></div>;
         }
 
